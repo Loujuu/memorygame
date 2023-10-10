@@ -8,9 +8,40 @@
 body {
   height: 100vh;
   /*vh=viewpoint height - 100 percent of available height of webpage*/
+  display: flex;
   background: #060ab2;
 }
 
-img {
-  width: 100px;
+.memory-game {
+  width: 640px;
+  height: 640px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.memory-card {
+  width: calc(25% - 10px);
+  /*calc to subtract margin*/
+  height: calc(33.333% - 10px);
+  margin: 5px;
+  position: relative;
+  transform: scale(1);
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.memory-card:active {
+  transform: scale(0.97);
+  transition: transform 0.2s;
+}
+
+.front-face,
+.back-face {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  position: absolute;
+  /* relative to parrent*/
+  border-radius: 5px;
+  background: #1c7ccc;
 }

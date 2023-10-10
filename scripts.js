@@ -9,6 +9,7 @@ let firstCard, secondCard;
 
 function flipCard() {
   if (lockBoard) return;
+  if (this === firstCard) return;
   /*toggle means if class is there add it, if not remove*/
   this.classList.add("flip");
 
@@ -19,7 +20,6 @@ function flipCard() {
     return;
   }
   //second click
-  hasFlippedCard = false;
   secondCard = this;
 
   checkForMatch();
@@ -37,6 +37,8 @@ function checkForMatch() {
     //its a match!!
     firstCard.removeEventListener("click", flipCard);
     secondCard.removeEventListener("click", flipCard);
+
+    resetBoard();
   }
 
   function unflipCards() {
@@ -46,9 +48,14 @@ function checkForMatch() {
       firstCard.classList.remove("flip");
       secondCard.classList.remove("flip");
 
-      lockBoard = false;
+      resetBoard();
     }, 1500);
   }
+}
+
+function resetBoard() {
+  [hasFlippedCard, lockBoard] = [false, false];
+  [firstCard, secondCard] = [null, null];
 }
 
 /*loop throught the list. Add eventlistner to each card to listen for click event, whenever event is fired, will execute a flipcard function */

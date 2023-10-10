@@ -63,7 +63,7 @@ function resetBoard() {
 //function inside () + () at end = immediately invoked function - executed right after definition
 (function shuffle() {
   cards.forEach((card) => {
-    let randomPos = Math.floor(Marth.random() * 12);
+    let randomPos = Math.floor(Math.random() * 12);
     card.style.order = randomPos;
   });
 })();

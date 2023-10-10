@@ -4,11 +4,11 @@ const cards = document.querySelectorAll(".memory-card");
 
 /*Has to know if player clicks first or second card */
 let hasFlippedCard = false;
+let lockBoard = false;
 let firstCard, secondCard;
 
 function flipCard() {
-  //   console.log("I was clicked!");
-  //   console.log(this);
+  if (lockBoard) return;
   /*toggle means if class is there add it, if not remove*/
   this.classList.add("flip");
 
@@ -41,9 +41,12 @@ function checkForMatch() {
 
   function unflipCards() {
     // not a match
+    lockBoard = true;
     setTimeout(() => {
       firstCard.classList.remove("flip");
       secondCard.classList.remove("flip");
+
+      lockBoard = false;
     }, 1500);
   }
 }

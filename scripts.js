@@ -24,8 +24,22 @@ function flipCard() {
     //console.log({ firstCard, secondCard});
 
     //do cards match?
-    console.log(firstCard.dataset.framework);
-    console.log(secondCard.dataset.framework);
+    //console.log(firstCard.dataset.framework);
+    //console.log(secondCard.dataset.framework);
+    /*now we can identify cards. Check if framework from first and second card are the same. If they are remove eventlistener to prevent from click again */
+    if (firstCard.dataset.framework === secondCard.dataset.framework) {
+      //its a match!!
+      firstCard.removeEventListener("click", flipCard);
+      secondCard.removeEventListener("click", flipCard);
+    }
+    //console.log("Function was executed");
+    else {
+      // not a match
+      setTimeout(() => {
+        firstCard.classList.remove("flip");
+        secondCard.classList.remove("flip");
+      }, 1500);
+    }
   }
 }
 

@@ -58,5 +58,15 @@ function resetBoard() {
   [firstCard, secondCard] = [null, null];
 }
 
+//generate random number from 0-11
+// math.floor rounds up and returns largest integer
+//function inside () + () at end = immediately invoked function - executed right after definition
+(function shuffle() {
+  cards.forEach((card) => {
+    let randomPos = Math.floor(Marth.random() * 12);
+    card.style.order = randomPos;
+  });
+})();
+
 /*loop throught the list. Add eventlistner to each card to listen for click event, whenever event is fired, will execute a flipcard function */
 cards.forEach((card) => card.addEventListener("click", flipCard));

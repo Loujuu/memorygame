@@ -16,30 +16,35 @@ function flipCard() {
     //first click
     hasFlippedCard = true;
     firstCard = this;
-    //console.log({hasFlippedCard, firstCard});
-  } else {
-    //second click
-    hasFlippedCard = false;
-    secondCard = this;
-    //console.log({ firstCard, secondCard});
+    return;
+  }
+  //second click
+  hasFlippedCard = false;
+  secondCard = this;
 
-    //do cards match?
-    //console.log(firstCard.dataset.framework);
-    //console.log(secondCard.dataset.framework);
-    /*now we can identify cards. Check if framework from first and second card are the same. If they are remove eventlistener to prevent from click again */
-    if (firstCard.dataset.framework === secondCard.dataset.framework) {
-      //its a match!!
-      firstCard.removeEventListener("click", flipCard);
-      secondCard.removeEventListener("click", flipCard);
-    }
-    //console.log("Function was executed");
-    else {
-      // not a match
-      setTimeout(() => {
-        firstCard.classList.remove("flip");
-        secondCard.classList.remove("flip");
-      }, 1500);
-    }
+  checkForMatch();
+}
+
+function checkForMatch() {
+  //do cards match?
+  /*now we can identify cards. Check if framework from first and second card are the same. If they are remove eventlistener to prevent from click again */
+  let isMatch = firstCard.dataset.framework === secondCard.dataset.framework;
+  //ternary operator: First = condition
+  // second if true. Theird if false
+  isMatch ? disableCards() : unflipCards();
+
+  function disableCards() {
+    //its a match!!
+    firstCard.removeEventListener("click", flipCard);
+    secondCard.removeEventListener("click", flipCard);
+  }
+
+  function unflipCards() {
+    // not a match
+    setTimeout(() => {
+      firstCard.classList.remove("flip");
+      secondCard.classList.remove("flip");
+    }, 1500);
   }
 }
 

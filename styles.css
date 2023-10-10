@@ -1,0 +1,12 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  /*border-box keeps h and w size while adding border and padding, default is conten-box adding to total w and h*/
+}
+
+body {
+  height: 100vh;
+  /*vh=view point height - 100 percent of availble height space of webpage*/
+  background-color: #060ab2;
+}

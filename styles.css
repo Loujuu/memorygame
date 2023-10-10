@@ -2,11 +2,15 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  /*border-box keeps h and w size while adding border and padding, default is conten-box adding to total w and h*/
+  /*border-box will keeps h and w while adding border and padding, default is content-box adding to total w and h*/
 }
 
 body {
   height: 100vh;
-  /*vh=view point height - 100 percent of availble height space of webpage*/
-  background-color: #060ab2;
+  /*vh=viewpoint height - 100 percent of available height of webpage*/
+  background: #060ab2;
+}
+
+img {
+  width: 100px;
 }

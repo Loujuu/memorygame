@@ -12,20 +12,37 @@ body {
   background: #060ab2;
 }
 
+.main-container {
+  margin: auto;
+}
+
 .header {
-  height: 60px;
   width: 100%;
   background: #1c7ccc;
   display: flex;
   padding: 20px;
   border-radius: 4px;
-  margin: 4px;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+.update {
+  width: 100px;
+  height: 32px;
+  background-color: #060ab2;
+  color: white;
+  padding: 8px;
+  border-radius: 12px;
+  border: 0;
+  outline: none;
 }
 
 .title {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   color: white;
+  padding-right: 4px;
 }
 
 .memory-game {
@@ -71,4 +88,19 @@ body {
 
 .front-face {
   transform: rotateY(180deg);
+}
+
+select {
+  width: 100px;
+  background-color: #060ab2;
+  color: white;
+  padding: 8px;
+  border-radius: 12px;
+  border: 0;
+  outline: none;
+}
+
+option {
+  border: 0;
+  outline: none;
 }

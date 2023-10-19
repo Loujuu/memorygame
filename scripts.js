@@ -67,15 +67,40 @@ const cardsData = [
   },
 ];
 
+// Get references to the selection and button elements
+const cardsSelect = document.getElementById("cards");
+const updateButton = document.getElementById("btn");
+
+// Function to handle updating the number of cards displayed
+function updateCards() {
+  const numberOfCards = parseInt(cardsSelect.value);
+
+  // Filter the cards data to get the desired number of card pairs
+  const filteredCardsData = cardsData.slice(0, numberOfCards);
+
+  // Clear the game container
+  gameContainer.innerHTML = "";
+
+  // Generate and display the cards
+  generateCards(filteredCardsData);
+  addEventListeners();
+  shuffleCards(numberOfCards);
+}
+
+// Add an event listener to the update button
+updateButton.addEventListener("click", updateCards);
+
+// Initial call to display the cards
+updateCards();
+
 // Function to generate the card HTML and add it to the DOM
-function generateCards() {
+function generateCards(cardsData) {
   cardsData.forEach((cardData) => {
     const cardHTML = `
       <div class="memory-card" data-framework="${cardData.framework}">
         <img class="front-face" src="${cardData.frontFace}" alt="${cardData.framework}">
         <img class="back-face" src="${cardData.backFace}" alt="Memory Card">
       </div>
-
     `;
     gameContainer.innerHTML += cardHTML;
   });
@@ -148,10 +173,10 @@ function resetBoard() {
 }
 
 // Shuffle cards
-function shuffleCards() {
+function shuffleCards(numberOfCards) {
   const cards = document.querySelectorAll(".memory-card");
   cards.forEach((card) => {
-    let randomPos = Math.floor(Math.random() * cardsData.length);
+    let randomPos = Math.floor(Math.random() * numberOfCards);
     card.style.order = randomPos;
   });
 }

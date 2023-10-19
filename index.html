@@ -8,20 +8,23 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <section class="memory-game" id="gameContainer">
+    <div class="main-container">
       <div class="header">
-        <label class="title">Choose cards:</label>
+        <label class="title">Number of cards</label>
         <div class="selection">
           <select name="cards" id="cards">
             <option id="filterFour" value="4">4</option>
-            <option id="9" value="9">9</option>
-            <option id="12" value="12">12</option>
+            <option id="filterEight" value="8">8</option>
+            <option id="filterTwelve" value="12">12</option>
           </select>
-          <button id="btn" type="button">update</button>
+          <button class="update" id="btn" type="button">Select</button>
         </div>
       </div>
-      <!-- Memory cards will be inserted here by JavaScript -->
-    </section>
+
+      <section class="memory-game" id="gameContainer">
+        <!-- Memory cards will be inserted here by JavaScript -->
+      </section>
+    </div>
     <script src="scripts.js"></script>
   </body>
 </html>

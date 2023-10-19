@@ -1,6 +1,91 @@
 /*create list of all elements and store it inside const named card */
 /*This returns a list of all <div> elements within the document with a class of memory-card*/
-const cards = document.querySelectorAll(".memory-card");
+//document.querySelector(cards);
+
+const gameContainer = document.querySelector(".memory-game");
+
+const cardsData = [
+  {
+    framework: "aurelia",
+    frontFace: "img/aurelia.svg",
+    backFace: "img/js-badge.svg",
+  },
+  {
+    framework: "aurelia",
+    frontFace: "img/aurelia.svg",
+    backFace: "img/js-badge.svg",
+  },
+  {
+    framework: "vue",
+    frontFace: "img/vue.svg",
+    backFace: "img/js-badge.svg",
+  },
+  {
+    framework: "vue",
+    frontFace: "img/vue.svg",
+    backFace: "img/js-badge.svg",
+  },
+  {
+    framework: "angular",
+    frontFace: "img/angular.svg",
+    backFace: "img/js-badge.svg",
+  },
+  {
+    framework: "angular",
+    frontFace: "img/angular.svg",
+    backFace: "img/js-badge.svg",
+  },
+  {
+    framework: "backbone",
+    frontFace: "img/backbone.svg",
+    backFace: "img/js-badge.svg",
+  },
+  {
+    framework: "backbone",
+    frontFace: "img/backbone.svg",
+    backFace: "img/js-badge.svg",
+  },
+  {
+    framework: "ember",
+    frontFace: "img/ember.svg",
+    backFace: "img/js-badge.svg",
+  },
+  {
+    framework: "ember",
+    frontFace: "img/ember.svg",
+    backFace: "img/js-badge.svg",
+  },
+  {
+    framework: "react",
+    frontFace: "img/react.svg",
+    backFace: "img/js-badge.svg",
+  },
+  {
+    framework: "react",
+    frontFace: "img/react.svg",
+    backFace: "img/js-badge.svg",
+  },
+];
+
+// Function to generate the card HTML and add it to the DOM
+function generateCards() {
+  cardsData.forEach((cardData) => {
+    const cardHTML = `
+      <div class="memory-card" data-framework="${cardData.framework}">
+        <img class="front-face" src="${cardData.frontFace}" alt="${cardData.framework}">
+        <img class="back-face" src="${cardData.backFace}" alt="Memory Card">
+      </div>
+
+    `;
+    gameContainer.innerHTML += cardHTML;
+  });
+}
+
+// Function to add event listeners to the cards
+function addEventListeners() {
+  const cardsData = document.querySelectorAll(".memory-card");
+  cardsData.forEach((cardData) => cardData.addEventListener("click", flipCard));
+}
 
 /*Has to know if player clicks first or second card */
 let hasFlippedCard = false;
@@ -24,6 +109,10 @@ function flipCard() {
 
   checkForMatch();
 }
+
+// Call the functions
+generateCards();
+addEventListeners();
 
 function checkForMatch() {
   //do cards match?
@@ -58,14 +147,13 @@ function resetBoard() {
   [firstCard, secondCard] = [null, null];
 }
 
-//generate random number from 0-11
-// math.floor rounds up and returns largest integer
-//function inside () + () at end = immediately invoked function - executed right after definition
+// Shuffle cards
+function shuffleCards() {
+  const cards = document.querySelectorAll(".memory-card");
+  cards.forEach((card) => {
+    let randomPos = Math.floor(Math.random() * cardsData.length);
+    card.style.order = randomPos;
+  });
+}
 
-cards.forEach((card) => {
-  let randomPos = Math.floor(Math.random() * 12);
-  card.style.order = randomPos;
-});
-
-/*loop throught the list. Add eventlistner to each card to listen for click event, whenever event is fired, will execute a flipcard function */
-cards.forEach((card) => card.addEventListener("click", flipCard));
+shuffleCards();

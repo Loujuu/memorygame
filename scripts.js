@@ -3,67 +3,38 @@
 //document.querySelector(cards);
 
 const gameContainer = document.querySelector(".memory-game");
+const backFace = "img/js-badge.svg";
 
 const cardsData = [
   {
     framework: "aurelia",
     frontFace: "img/aurelia.svg",
-    backFace: "img/js-badge.svg",
-  },
-  {
-    framework: "aurelia",
-    frontFace: "img/aurelia.svg",
-    backFace: "img/js-badge.svg",
+    // backFace: "img/js-badge.svg",
   },
   {
     framework: "vue",
     frontFace: "img/vue.svg",
-    backFace: "img/js-badge.svg",
-  },
-  {
-    framework: "vue",
-    frontFace: "img/vue.svg",
-    backFace: "img/js-badge.svg",
+    //backFace: "img/js-badge.svg",
   },
   {
     framework: "angular",
     frontFace: "img/angular.svg",
-    backFace: "img/js-badge.svg",
-  },
-  {
-    framework: "angular",
-    frontFace: "img/angular.svg",
-    backFace: "img/js-badge.svg",
+    //backFace: "img/js-badge.svg",
   },
   {
     framework: "backbone",
     frontFace: "img/backbone.svg",
-    backFace: "img/js-badge.svg",
-  },
-  {
-    framework: "backbone",
-    frontFace: "img/backbone.svg",
-    backFace: "img/js-badge.svg",
+    //backFace: "img/js-badge.svg",
   },
   {
     framework: "ember",
     frontFace: "img/ember.svg",
-    backFace: "img/js-badge.svg",
-  },
-  {
-    framework: "ember",
-    frontFace: "img/ember.svg",
-    backFace: "img/js-badge.svg",
+    //backFace: "img/js-badge.svg",
   },
   {
     framework: "react",
     frontFace: "img/react.svg",
-    backFace: "img/js-badge.svg",
-  },
-  {
-    framework: "react",
-    frontFace: "img/react.svg",
-    backFace: "img/js-badge.svg",
+    //backFace: "img/js-badge.svg",
   },
 ];
 
@@ -84,7 +55,6 @@ function updateCards() {
   // Generate and display the cards
   generateCards(filteredCardsData);
   addEventListeners();
-  shuffleCards(numberOfCards);
 }
 
 // Add an event listener to the update button
@@ -95,15 +65,43 @@ updateCards();
 
 // Function to generate the card HTML and add it to the DOM
 function generateCards(cardsData) {
-  cardsData.forEach((cardData) => {
+  // Create pairs of each card
+  const pairedCardsData = cardsData.concat(cardsData);
+
+  // Shuffle the paired cards
+  const shuffledCardsData = shuffle(pairedCardsData);
+
+  shuffledCardsData.forEach((cardData) => {
     const cardHTML = `
       <div class="memory-card" data-framework="${cardData.framework}">
         <img class="front-face" src="${cardData.frontFace}" alt="${cardData.framework}">
-        <img class="back-face" src="${cardData.backFace}" alt="Memory Card">
+        <img class="back-face" src="${backFace}" alt="Memory Card">
       </div>
     `;
     gameContainer.innerHTML += cardHTML;
   });
+  shuffleCards();
+}
+
+// Function to shuffle an array
+function shuffle(array) {
+  let currentIndex = array.length,
+    randomIndex;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
 }
 
 // Function to add event listeners to the cards
@@ -136,7 +134,7 @@ function flipCard() {
 }
 
 // Call the functions
-generateCards();
+generateCards(cardsData);
 addEventListeners();
 
 function checkForMatch() {
@@ -173,12 +171,10 @@ function resetBoard() {
 }
 
 // Shuffle cards
-function shuffleCards(numberOfCards) {
+function shuffleCards() {
   const cards = document.querySelectorAll(".memory-card");
   cards.forEach((card) => {
-    let randomPos = Math.floor(Math.random() * numberOfCards);
+    let randomPos = Math.floor(Math.random() * cards.length);
     card.style.order = randomPos;
   });
 }
-
-shuffleCards();

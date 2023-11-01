@@ -27,7 +27,7 @@ body {
   align-items: center;
 }
 
-.update {
+.btn-primary {
   width: 100px;
   height: 32px;
   background-color: #060ab2;
@@ -36,6 +36,11 @@ body {
   border-radius: 12px;
   border: 0;
   outline: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #090ded;
 }
 
 .title {
@@ -103,4 +108,39 @@ select {
 option {
   border: 0;
   outline: none;
+}
+
+.modal {
+  width: 400px;
+  height: 200px;
+  background-color: white;
+  position: absolute;
+  top: 43%;
+  left: 43%;
+  z-index: 20;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.modal-content {
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 40;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 22px;
+  color: #060ab2;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.modal-title {
+  margin-bottom: 20px;
+}
+
+.modal-test {
+  width: 400px;
+  height: 400 px;
+  background-color: #3cc63e;
+  margin: auto;
 }

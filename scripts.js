@@ -9,59 +9,46 @@ const cardsData = [
   {
     framework: "aurelia",
     frontFace: "img/aurelia.svg",
-    // backFace: "img/js-badge.svg",
   },
   {
     framework: "vue",
     frontFace: "img/vue.svg",
-    //backFace: "img/js-badge.svg",
   },
   {
     framework: "angular",
     frontFace: "img/angular.svg",
-    //backFace: "img/js-badge.svg",
   },
   {
     framework: "backbone",
     frontFace: "img/backbone.svg",
-    //backFace: "img/js-badge.svg",
   },
   {
     framework: "ember",
     frontFace: "img/ember.svg",
-    //backFace: "img/js-badge.svg",
   },
   {
     framework: "react",
     frontFace: "img/react.svg",
-    //backFace: "img/js-badge.svg",
   },
 ];
 
 // Get references to the selection and button elements
 const cardsSelect = document.getElementById("cards");
+const filterFour = document.getElementById("filterFour");
 const updateButton = document.getElementById("btn");
-
-// Function to handle updating the number of cards displayed
-function updateCards() {
-  const numberOfCards = parseInt(cardsSelect.value);
-
-  // Filter the cards data to get the desired number of card pairs
-  const filteredCardsData = cardsData.slice(0, numberOfCards);
-
-  // Clear the game container
-  gameContainer.innerHTML = "";
-
-  // Generate and display the cards
-  generateCards(filteredCardsData);
-  addEventListeners();
-}
 
 // Add an event listener to the update button
 updateButton.addEventListener("click", updateCards);
 
 // Initial call to display the cards
 updateCards();
+
+hideModal();
+
+function hideModal() {
+  const modal = document.getElementById("modal");
+  modal.style.display = "none";
+}
 
 // Function to generate the card HTML and add it to the DOM
 function generateCards(cardsData) {
@@ -116,6 +103,7 @@ let lockBoard = false;
 let firstCard, secondCard;
 
 function flipCard() {
+  console.log(this);
   if (lockBoard) return;
   if (this === firstCard) return;
   /*toggle means if class is there add it, if not remove*/
@@ -130,20 +118,37 @@ function flipCard() {
   //second click
   secondCard = this;
 
-  checkForMatch();
+  if (firstCard && secondCard) {
+    // Get the number of cards from the select element
+    const numberOfCards = parseInt(cardsSelect.value);
+
+    // Filter the cards data to get the desired number of card pairs
+    const filteredCardsData = cardsData.slice(0, numberOfCards);
+
+    checkForMatch(filteredCardsData); // Pass the filteredCardsData as an argument
+  }
 }
 
 // Call the functions
 generateCards(cardsData);
 addEventListeners();
 
-function checkForMatch() {
+let pairedCards = 0;
+
+function checkForMatch(filteredCardsData) {
   //do cards match?
   /*now we can identify cards. Check if framework from first and second card are the same. If they are remove eventlistener to prevent from click again */
   let isMatch = firstCard.dataset.framework === secondCard.dataset.framework;
-  //ternary operator: First = condition
-  // second if true. Theird if false
-  isMatch ? disableCards() : unflipCards();
+
+  if (isMatch) {
+    disableCards();
+    pairedCards += 2; // Increment the paired cards counter
+    if (pairedCards === filteredCardsData.length * 2) {
+      showModal();
+    }
+  } else {
+    unflipCards();
+  }
 
   function disableCards() {
     //its a match!!
@@ -151,6 +156,37 @@ function checkForMatch() {
     secondCard.removeEventListener("click", flipCard);
 
     resetBoard();
+  }
+
+  function showModal() {
+    const modal = document.getElementById("modal");
+    const newGameBtn = document.getElementById("newGameBtn");
+
+    modal.style.display = "block";
+
+    newGameBtn.onclick = function () {
+      hideModal();
+      resetGame();
+    };
+
+    window.onclick = function (event) {
+      if (event.target === modal) {
+        hideModal();
+        resetGame();
+      }
+    };
+  }
+
+  function resetGame() {
+    // Clear the game container
+    gameContainer.innerHTML = "";
+
+    // Generate and display the initial set of cards
+    generateCards(cardsData);
+    addEventListeners();
+
+    // Reset the paired cards counter
+    pairedCards = 0;
   }
 
   function unflipCards() {
@@ -165,9 +201,41 @@ function checkForMatch() {
   }
 }
 
+// Function to handle updating the number of cards displayed
+function updateCards() {
+  const numberOfCards = parseInt(cardsSelect.value);
+
+  // Log the value of numberOfCards
+  console.log("Number of Cards: ", numberOfCards);
+
+  // Filter the cards data to get the desired number of card pairs
+  const filteredCardsData = cardsData.slice(0, numberOfCards);
+
+  // Clear the game container
+  gameContainer.innerHTML = "";
+
+  // Generate and display the cards
+  generateCards(filteredCardsData);
+
+  addEventListeners();
+
+  //Update the checkForMatch function to use the filtered cards data
+  const cards = document.querySelectorAll(".memory-card");
+  cards.forEach(function (card) {
+    card.addEventListener("click", function () {
+      flipCard.call(this);
+      checkForMatch(filteredCardsData);
+    });
+  });
+
+  // Reset the paired cards counter
+  //pairedCards = 0;
+}
+
 function resetBoard() {
   [hasFlippedCard, lockBoard] = [false, false];
   [firstCard, secondCard] = [null, null];
+  pairedCards = 0; // Reset the paired cards counter
 }
 
 // Shuffle cards

@@ -130,10 +130,6 @@ function flipCard() {
   }
 }
 
-// Call the functions
-generateCards(cardsData);
-addEventListeners();
-
 let pairedCards = 0;
 
 function checkForMatch(filteredCardsData) {
@@ -219,14 +215,14 @@ function updateCards() {
   // Generate and display the cards
   generateCards(filteredCardsData);
 
-  addEventListeners();
+  // addEventListeners();
 
   //Update the checkForMatch function to use the filtered cards data
   const cards = document.querySelectorAll(".memory-card");
   cards.forEach(function (card) {
     card.addEventListener("click", function () {
       flipCard.call(this);
-      checkForMatch(filteredCardsData);
+      //   checkForMatch(filteredCardsData);
     });
   });
 
@@ -237,7 +233,6 @@ function updateCards() {
 function resetBoard() {
   [hasFlippedCard, lockBoard] = [false, false];
   [firstCard, secondCard] = [null, null];
-  pairedCards = 0; // Reset the paired cards counter
 }
 
 // Shuffle cards

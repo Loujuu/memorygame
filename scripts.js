@@ -35,6 +35,7 @@ const cardsData = [
 // Get references to the selection and button elements
 const cardsSelect = document.getElementById("cards");
 const filterFour = document.getElementById("filterFour");
+const filterEight = document.getElementById("filterEight");
 const updateButton = document.getElementById("btn");
 
 // Add an event listener to the update button
@@ -143,9 +144,10 @@ function checkForMatch(filteredCardsData) {
   if (isMatch) {
     disableCards();
     pairedCards += 2; // Increment the paired cards counter
-    if (pairedCards === filteredCardsData.length * 2) {
+    if (pairedCards === filteredCardsData.length) {
       showModal();
     }
+    console.log("length", filteredCardsData.length);
   } else {
     unflipCards();
   }

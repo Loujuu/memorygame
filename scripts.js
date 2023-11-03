@@ -140,7 +140,7 @@ function checkForMatch(filteredCardsData) {
   if (isMatch) {
     disableCards();
     pairedCards += 2; // Increment the paired cards counter
-    if (pairedCards === filteredCardsData.length) {
+    if (pairedCards === filteredCardsData.length * 2) {
       showModal();
     }
     console.log("length", filteredCardsData.length);

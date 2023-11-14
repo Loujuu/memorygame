@@ -9,6 +9,10 @@ class MemoryGame {
     this.firstCard = null;
     this.secondCard = null;
     this.pairedCards = 0;
+    this.timer = null;
+    this.startTime = null;
+    this.bestTime = localStorage.getItem("bestTime") || null;
+    this.displayBestTime();
 
     this.init();
   }
@@ -21,7 +25,6 @@ class MemoryGame {
         this.flipCard(event.target.closest(".memory-card"));
       }
     });
-
     this.updateCards();
     this.hideModal();
   }
@@ -66,6 +69,8 @@ class MemoryGame {
     card.classList.add("flip");
 
     if (!this.hasFlippedCard) {
+      // Start timer on first flip
+      this.startTimer();
       this.hasFlippedCard = true;
       this.firstCard = card;
     } else {
@@ -90,13 +95,46 @@ class MemoryGame {
         this.showModal();
       }, 1000);
     }
-
     this.resetBoard();
   }
 
   showModal() {
+    clearInterval(this.timer); // Stop the timer
+
+    const usedTime = Date.now() - this.startTime;
+    const seconds = Math.floor(usedTime / 1000);
+    this.updateBestTime(seconds);
+
+    const timeSpentElement = document.getElementById("timeSpent");
+    timeSpentElement.textContent = `${seconds}`;
+
     const modal = document.getElementById("modal");
     modal.style.display = "block";
+
+    // Reset the timer variable
+    this.timer = null;
+
+    // Ensure the event listener for the new game button is attached
+    // (This is assuming the button is always present in the modal and doesn't get dynamically added/removed)
+    const newGameBtn = document.getElementById("newGameBtn");
+    newGameBtn.onclick = () => this.resetGame();
+  }
+
+  updateBestTime(currentTime) {
+    if (this.bestTime === null || currentTime < this.bestTime) {
+      this.bestTime = currentTime;
+      localStorage.setItem("bestTime", currentTime);
+      this.displayBestTime();
+    }
+  }
+
+  displayBestTime() {
+    const bestTimeElement = document.getElementById("bestTime");
+    if (bestTimeElement) {
+      bestTimeElement.textContent = `Best Time: ${
+        this.bestTime || "N/A"
+      } seconds`;
+    }
   }
 
   unflipCards() {
@@ -108,26 +146,55 @@ class MemoryGame {
     }, 1500);
   }
 
+  startTimer() {
+    if (this.timer === null) {
+      this.startTime = Date.now();
+      this.timer = setInterval(() => {
+        const usedTime = Date.now() - this.startTime;
+        const seconds = Math.floor(usedTime / 1000);
+        document.getElementById("timer").innerText = `Time: ${seconds} seconds`;
+      }, 1000);
+    }
+  }
+
   resetBoard() {
     [this.hasFlippedCard, this.lockBoard] = [false, false];
     [this.firstCard, this.secondCard] = [null, null];
   }
 
   updateCards() {
-    console.log("Update cards called");
+    // Reset the game state if a game is in progress
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+      this.pairedCards = 0;
+      this.hasFlippedCard = false;
+      this.lockBoard = false;
+      this.firstCard = null;
+      this.secondCard = null;
+    }
+
     const numberOfCards = parseInt(this.cardsSelect.value);
-    console.log("Number of cards:", numberOfCards);
     const filteredCardsData = this.cardsData.slice(0, numberOfCards / 2); // Divide by 2 because each card appears twice
     this.generateCards(filteredCardsData);
-    console.log("filtered:", filteredCardsData);
+
+    // Update the timer display to 0
+    const timerElement = document.getElementById("timer");
+    if (timerElement) {
+      timerElement.textContent = "Time: 0 seconds";
+    }
 
     this.pairedCards = 0; // Reset the paired cards count
   }
 
   resetGame() {
+    clearInterval(this.timer); // Clear the timer
+    this.timer = null;
     this.hideModal();
     this.pairedCards = 0;
     this.updateCards(); // Regenerate cards based on current selection
+    // this.startTimer(); // Restart the timer
+    //document.getElementById("timer").innerText = "Time: 0 seconds";
   }
 
   hideModal() {

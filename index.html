@@ -10,7 +10,7 @@
   <body>
     <div class="main-container">
       <div class="header">
-        <label class="title">Number of cards</label>
+        <label class="title">Select cards</label>
         <div class="selection">
           <select name="cards" id="cards">
             <option id="filterFour" value="4">4</option>
@@ -19,6 +19,8 @@
           </select>
           <button class="btn-primary" id="btn" type="button">Select</button>
         </div>
+        <div id="bestTime"></div>
+        <div id="timer">Time: 0 seconds</div>
       </div>
 
       <section class="memory-game" id="gameContainer">
@@ -28,7 +30,10 @@
 
     <div id="modal" class="modal">
       <div class="modal-content">
-        <p class="modal-title">You are a winner!!!</p>
+        <h5 class="modal-title">You are a winner!!!</h5>
+        <div class="txt-container">
+          <p>Time spent:<span id="timeSpent"></span>seconds</p>
+        </div>
         <button class="btn-primary" id="newGameBtn">New game</button>
       </div>
     </div>

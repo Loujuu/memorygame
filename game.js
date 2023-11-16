@@ -32,19 +32,13 @@ class MemoryGame {
   }
 
   generateCards(filteredCardsData) {
-    // Use the Card class to create card elements
-    const cardElements = filteredCardsData
-      .map((data) => new Card(data).getHtml())
-      .join("");
-    this.gameContainer.innerHTML = cardElements;
-
     const pairedCardsData = filteredCardsData.concat(filteredCardsData);
     const shuffledCardsData = this.shuffle(pairedCardsData);
 
     this.gameContainer.innerHTML = shuffledCardsData
-      .map((cardData) =>
-        new Card({ ...cardData, backFace: this.backFace }).getHtml()
-      )
+      .map((cardData) => {
+        return new Card({ ...cardData, backFace: this.backFace }).getHtml();
+      })
       .join("");
 
     this.totalPairs = filteredCardsData.length; // Set the total number of pairs

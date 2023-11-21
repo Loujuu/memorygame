@@ -4,14 +4,10 @@
   box-sizing: border-box;
   /*border-box will keeps h and w while adding border and padding, default is content-box adding to total w and h*/
 }
-
+/* 
 p {
   font-size: 16px;
-}
-
-.txt-container {
-  margin-bottom: 20px;
-}
+} */
 
 body {
   height: 100vh;
@@ -49,122 +45,4 @@ body {
   text-align: end;
   font-size: 14px;
   flex: auto;
-}
-
-.btn-primary {
-  width: 100px;
-  height: 32px;
-  background-color: #060ab2;
-  color: white;
-  padding: 8px;
-  border-radius: 12px;
-  border: 0;
-  outline: none;
-  cursor: pointer;
-}
-
-.btn-primary:hover {
-  background-color: #090ded;
-}
-
-.title {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 16px;
-  color: white;
-  padding-right: 4px;
-}
-
-.memory-game {
-  width: 640px;
-  height: 640px;
-  margin: auto;
-  display: flex;
-  flex-wrap: wrap;
-  perspective: 1000px;
-}
-
-.memory-card {
-  width: calc(25% - 10px);
-  /*calc to subtract margin*/
-  height: calc(33.333% - 10px);
-  margin: 5px;
-  position: relative;
-  transform: scale(1);
-  transform-style: preserve-3d;
-  transition: transform 0.5s;
-}
-
-.memory-card:active {
-  transform: scale(0.97);
-  transition: transform 0.2s;
-}
-
-.memory-card.flip {
-  transform: rotateY(180deg);
-}
-
-.front-face,
-.back-face {
-  width: 100%;
-  height: 100%;
-  padding: 20px;
-  position: absolute;
-  /* relative to parrent*/
-  border-radius: 5px;
-  background: #1c7ccc;
-  backface-visibility: hidden;
-}
-
-.front-face {
-  transform: rotateY(180deg);
-}
-
-select {
-  width: 56px;
-  background-color: #060ab2;
-  color: white;
-  padding: 8px;
-  border-radius: 12px;
-  border: 0;
-  outline: none;
-}
-
-option {
-  border: 0;
-  outline: none;
-}
-
-.modal {
-  width: 400px;
-  height: 200px;
-  background-color: white;
-  position: absolute;
-  top: 43%;
-  left: 43%;
-  z-index: 20;
-  border-radius: 20px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.modal-content {
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 40;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 26px;
-  color: #060ab2;
-  text-align: center;
-  margin-top: 60px;
-}
-
-.modal-title {
-  margin-bottom: 20px;
-}
-
-.modal-test {
-  width: 400px;
-  height: 400 px;
-  background-color: #3cc63e;
-  margin: auto;
 }

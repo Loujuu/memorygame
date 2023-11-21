@@ -2,42 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script src="card.js"></script>
 
     <title>Memory game</title>
 
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="main-container">
-      <div class="header">
-        <label class="title">Select cards</label>
-        <div class="selection">
-          <select name="cards" id="cards">
-            <option id="filterFour" value="4">4</option>
-            <option id="filterEight" value="8">8</option>
-            <option id="filterTwelve" value="12">12</option>
-          </select>
-          <button class="btn-primary" id="btn" type="button">Select</button>
-        </div>
-        <div id="bestTime"></div>
-        <div id="timer">Time: 0 seconds</div>
-      </div>
+    <memory-game></memory-game>
 
-      <section class="memory-game" id="gameContainer">
-        <!-- Memory cards will be inserted here by JavaScript -->
-      </section>
-    </div>
-
-    <div id="modal" class="modal">
-      <div class="modal-content">
-        <h5 class="modal-title">You are a winner!!!</h5>
-        <div class="txt-container">
-          <p>Time spent:<span id="timeSpent"></span>seconds</p>
-        </div>
-        <button class="btn-primary" id="newGameBtn">New game</button>
-      </div>
-    </div>
-
-    <script type="module" src="main.js"></script>
+    <script type="module" src="game.js"></script>
   </body>
 </html>

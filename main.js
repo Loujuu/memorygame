@@ -1,46 +1,45 @@
-import MemoryGame from "./game.js";
+// // Import the custom elements
+// import "./game.js";
+// import "./card.js";
+// import "./modal.js";
 
-const gameContainer = document.querySelector(".memory-game");
-const cardsSelect = document.getElementById("cards");
-const backFace = "img/js-badge.svg";
-const cardsData = [
-  {
-    framework: "aurelia",
-    frontFace: "img/aurelia.svg",
-  },
-  {
-    framework: "vue",
-    frontFace: "img/vue.svg",
-  },
-  {
-    framework: "angular",
-    frontFace: "img/angular.svg",
-  },
-  {
-    framework: "backbone",
-    frontFace: "img/backbone.svg",
-  },
-  {
-    framework: "ember",
-    frontFace: "img/ember.svg",
-  },
-  {
-    framework: "react",
-    frontFace: "img/react.svg",
-  },
-];
+// document.addEventListener("DOMContentLoaded", () => {
+//   const memoryGame = document.querySelector("memory-game");
 
-const memoryGame = new MemoryGame(
-  gameContainer,
-  backFace,
-  cardsData,
-  cardsSelect
-);
-memoryGame.init();
+//   // Set properties or attributes
+//   memoryGame.backFace = "img/js-badge.svg";
+//   memoryGame.cardsData = [
+//     {
+//       framework: "aurelia",
+//       frontFace: "img/aurelia.svg",
+//     },
+//     {
+//       framework: "vue",
+//       frontFace: "img/vue.svg",
+//     },
+//     {
+//       framework: "angular",
+//       frontFace: "img/angular.svg",
+//     },
+//     {
+//       framework: "backbone",
+//       frontFace: "img/backbone.svg",
+//     },
+//     {
+//       framework: "ember",
+//       frontFace: "img/ember.svg",
+//     },
+//     {
+//       framework: "react",
+//       frontFace: "img/react.svg",
+//     },
+//   ];
 
-// Event listeners for the buttons
-const updateButton = document.getElementById("btn");
-updateButton.addEventListener("click", () => memoryGame.updateCards());
-
-const newGameBtn = document.getElementById("newGameBtn");
-newGameBtn.addEventListener("click", () => memoryGame.resetGame());
+//   // Set event listeners using the Shadow DOM
+//   memoryGame.shadowRoot
+//     .querySelector("#btn")
+//     .addEventListener("click", () => memoryGame.updateCards());
+//   memoryGame.shadowRoot
+//     .querySelector("#newGameBtn")
+//     .addEventListener("click", () => memoryGame.resetGame());
+// });

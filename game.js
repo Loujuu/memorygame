@@ -5,7 +5,7 @@ class MemoryGame extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" }); // Attach a shadow root to the element.
     this.backFace = "img/js-badge.svg";
-    //this.showModal = true;
+    // this.showModal = true;
     this.cardsData = [
       {
         framework: "aurelia",
@@ -45,6 +45,7 @@ class MemoryGame extends HTMLElement {
   }
 
   connectedCallback() {
+    console.log("ConnectedCallback - MemoryGame");
     this.render(); // Call render first to create the initial structure
 
     // Ensure elements are rendered before initializing
@@ -83,12 +84,13 @@ class MemoryGame extends HTMLElement {
     this.updateCards();
     this.hideModal();
 
-    this.shadowRoot
-      .querySelector("#btn")
-      .addEventListener("click", () => this.updateCards());
+    // this.shadowRoot
+    //   .querySelector("#btn")
+    //   .addEventListener("click", () => this.updateCards());
 
     // Access the modal element
     this.modal = this.shadowRoot.querySelector("memory-modal");
+    console.log("Modal element:", this.modal); // Check if the modal is found
 
     if (!this.modal) {
       console.error("Modal element not found");
@@ -168,20 +170,22 @@ class MemoryGame extends HTMLElement {
   }
 
   showModal() {
+    const modal = this.shadowRoot.querySelector("memory-modal");
     const usedTime = this.seconds;
     this.updateBestTime(usedTime);
 
     if (this.modal) {
       this.modal.show(usedTime); // Call the show method of MemoryModal
+      this.modal.onNewGame(() => this.resetGame());
     } else {
-      console.warn("Modal instance not found");
+      console.warn("Modal element not available when showModal called");
     }
-    const modal = this.shadowRoot.querySelector("memory-modal");
-    //modal.show(this.seconds);
+    //const modal = this.shadowRoot.querySelector("memory-modal");
+    modal.show(seconds);
     clearInterval(this.timer);
     this.timer = null;
 
-    modal.onNewGame(() => this.resetGame());
+    //modal.onNewGame(() => this.resetGame());
   }
 
   disableCards() {

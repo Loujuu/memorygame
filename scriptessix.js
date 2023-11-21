@@ -193,7 +193,7 @@ class MemoryGame {
     this.hideModal();
     this.pairedCards = 0;
     this.updateCards(); // Regenerate cards based on current selection
-    // this.startTimer(); // Restart the timer
+    this.startTimer(); // Restart the timer
     //document.getElementById("timer").innerText = "Time: 0 seconds";
   }
 

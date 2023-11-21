@@ -2,13 +2,14 @@ class MemoryModal extends HTMLElement {
   constructor() {
     super(); // Always call super() first in the constructor.
     this.attachShadow({ mode: "open" }); // Attach a shadow root to the element.
-    this.seconds = 0;
+    //this.seconds = 0;
   }
 
   connectedCallback() {
     // Setup the card when the element is added to the document
     this.render();
-    this.show(); // Show the modal with a default time spent of 0 seconds
+    this.show(0); // Show the modal with a default time spent of 0 seconds
+
     // this.hide();
   }
 
@@ -23,10 +24,10 @@ class MemoryModal extends HTMLElement {
     this.shadowRoot.querySelector(".modal").style.display = "none";
   }
 
-  onNewGame(callback) {
+  onNewGame() {
     // Attach an event listener to the new game button
     const newGameBtn = this.shadowRoot.querySelector("#newGameBtn");
-    newGameBtn.onclick = callback;
+    newGameBtn.onclick = resetGame();
   }
 
   render() {

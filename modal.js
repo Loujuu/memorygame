@@ -13,12 +13,12 @@ class MemoryModal extends HTMLElement {
     // this.hide();
   }
 
-  // show(timeSpent) {
-  //   this.shadowRoot.querySelector(".modal").style.display = "block";
-  //   this.shadowRoot.querySelector(
-  //     "#timeSpent"
-  //   ).textContent = `${timeSpent} seconds`;
-  // }
+  show(timeSpent) {
+    this.shadowRoot.querySelector(".modal").style.display = "block";
+    this.shadowRoot.querySelector(
+      "#timeSpent"
+    ).textContent = `${timeSpent} seconds`;
+  }
 
   // hide() {
   //   this.shadowRoot.querySelector(".modal").style.display = "none";

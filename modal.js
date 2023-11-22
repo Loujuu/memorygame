@@ -8,21 +8,21 @@ class MemoryModal extends HTMLElement {
   connectedCallback() {
     // Setup the card when the element is added to the document
     this.render();
-    this.show(0); // Show the modal with a default time spent of 0 seconds
+    // this.show(); // Show the modal with a default time spent of 0 seconds
 
     // this.hide();
   }
 
-  show(timeSpent) {
-    this.shadowRoot.querySelector(".modal").style.display = "block";
-    this.shadowRoot.querySelector(
-      "#timeSpent"
-    ).textContent = `${timeSpent} seconds`;
-  }
+  // show(timeSpent) {
+  //   this.shadowRoot.querySelector(".modal").style.display = "block";
+  //   this.shadowRoot.querySelector(
+  //     "#timeSpent"
+  //   ).textContent = `${timeSpent} seconds`;
+  // }
 
-  hide() {
-    this.shadowRoot.querySelector(".modal").style.display = "none";
-  }
+  // hide() {
+  //   this.shadowRoot.querySelector(".modal").style.display = "none";
+  // }
 
   onNewGame() {
     // Attach an event listener to the new game button
@@ -34,8 +34,6 @@ class MemoryModal extends HTMLElement {
     // Use the shadow DOM to encapsulate the styles and structure
     this.shadowRoot.innerHTML = `
       <style>
-
-
       .modal {
         width: 400px;
         height: 200px;
@@ -54,12 +52,10 @@ class MemoryModal extends HTMLElement {
         width: 100%;
         height: 100%;
         left: 0;
-        top: 40;
         font-family: Arial, Helvetica, sans-serif;
         font-size: 26px;
         color: #060ab2;
         text-align: center;
-        margin-top: 60px;
       }   
       .modal-title {
         margin-bottom: 20px;
@@ -89,6 +85,20 @@ class MemoryModal extends HTMLElement {
       }
       p {
         font-size: 16px;
+      }
+      #timer {
+        font-family: Arial, Helvetica, sans-serif;
+        color: white;
+        text-align: end;
+        font-size: 14px;
+        flex: auto;
+      }     
+      #bestTime {
+        font-family: Arial, Helvetica, sans-serif;
+        color: white;
+        text-align: end;
+        font-size: 14px;
+        flex: auto;
       }
       </style>
   <div class="modal">

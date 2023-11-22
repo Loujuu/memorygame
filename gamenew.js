@@ -34,7 +34,6 @@ class MemoryGame extends HTMLElement {
     ];
     this.hasFlippedCard = false;
     this.lockBoard = false;
-    this.seconds = 0;
     this.firstCard = null;
     this.secondCard = null;
     this.pairedCards = 0;
@@ -60,46 +59,15 @@ class MemoryGame extends HTMLElement {
     this.cardsSelect = this.shadowRoot.querySelector("#cards");
     this.modal = this.shadowRoot.querySelector("memory-modal");
 
-    // Listen for the custom event from memory-card elements
-    this.gameContainer.addEventListener("card-flipped", (event) => {
-      // The event detail contains the card element that was flipped
-      const flippedCard = event.detail.cardElement;
-      this.flipCard(flippedCard);
+    //adding eventlistener to gamecontainer instead of on card
+    this.gameContainer.addEventListener("click", (event) => {
+      // Check if the clicked element is a memory card
+      if (event.target.closest(".memory-card")) {
+        this.flipCard(event.target.closest(".memory-card"));
+      }
     });
-
-    // Ensure gameContainer is available before adding event listeners
-    if (this.gameContainer) {
-      this.gameContainer.addEventListener("card-flipped", (event) => {
-        if (event.target.closest(".memory-card")) {
-          this.flipCard(event.target.closest(".memory-card"));
-        }
-      });
-
-      this.shadowRoot.querySelector("#btn").addEventListener("click", () => {
-        this.updateCards();
-      });
-    } else {
-      console.error("Element #gameContainer not found");
-    }
-
-    //this.updateCards();
-    //this.hideModal();
-
-    // Access the modal element
-    this.modal = this.shadowRoot.querySelector("memory-modal");
-    console.log("Modal element:", this.modal); // Check if the modal is found
-
-    // if (!this.modal) {
-    //   console.error("Modal element not found");
-    //   return; // Exit the function if modal is not found
-    // }
-
-    // Now you can safely add event listeners or interact with the modal
-    //this.modal.onNewGame(() => this.resetGame());
-
     this.updateCards();
-    this.displayBestTime();
-    // this.checkForMatch();
+    this.hideModal();
   }
 
   flipCard(cardElement) {
@@ -130,15 +98,15 @@ class MemoryGame extends HTMLElement {
       .map(
         (cardData) => `
         <memory-card 
-          framework="${cardData.framework}" 
-          frontFace="${cardData.frontFace}" 
-          backFace="${this.backFace}">
-        </memory-card>
+        data-framework="${cardData.framework}" 
+        frontFace="${cardData.frontFace}" 
+        backFace="${this.backFace}">
+      </memory-card>
       `
       )
       .join("");
 
-    this.totalPairs = filteredCardsData.length;
+    this.totalPairs = filteredCardsData.length; // Set the total number of pairs
   }
 
   shuffle(array) {
@@ -155,6 +123,23 @@ class MemoryGame extends HTMLElement {
     return array;
   }
 
+  flipCard(card) {
+    if (this.lockBoard) return;
+    if (card === this.firstCard) return;
+
+    card.classList.add("flip");
+
+    if (!this.hasFlippedCard) {
+      // Start timer on first flip
+      this.startTimer();
+      this.hasFlippedCard = true;
+      this.firstCard = card;
+    } else {
+      this.secondCard = card;
+      this.checkForMatch();
+    }
+  }
+
   checkForMatch() {
     // Ensure both cards are not null
     if (!this.firstCard || !this.secondCard) {
@@ -164,25 +149,6 @@ class MemoryGame extends HTMLElement {
     let isMatch =
       this.firstCard.dataset.framework === this.secondCard.dataset.framework;
     isMatch ? this.disableCards() : this.unflipCards();
-  }
-
-  showModal() {
-    const modal = this.shadowRoot.querySelector("memory-modal");
-    const usedTime = this.seconds;
-    this.updateBestTime(usedTime);
-
-    // if (this.modal) {
-    //   this.modal.show(usedTime); // Call the show method of MemoryModal
-    //   this.modal.onNewGame(() => this.resetGame());
-    // } else {
-    //   console.warn("Modal element not available when showModal called");
-    // }
-    //const modal = this.shadowRoot.querySelector("memory-modal");
-    // modal.show(seconds);
-    clearInterval(this.timer);
-    this.timer = null;
-
-    //modal.onNewGame(() => this.resetGame());
   }
 
   disableCards() {
@@ -205,10 +171,10 @@ class MemoryGame extends HTMLElement {
     const seconds = Math.floor(usedTime / 1000);
     this.updateBestTime(seconds);
 
-    const timeSpentElement = this.shadowRoot.querySelector("timeSpent");
+    const timeSpentElement = document.getElementById("timeSpent");
     timeSpentElement.textContent = `${seconds}`;
 
-    const modal = this.shadowRoot.querySelector("memory-modal");
+    const modal = document.getElementById("modal");
     modal.style.display = "block";
 
     // Reset the timer variable
@@ -216,36 +182,9 @@ class MemoryGame extends HTMLElement {
 
     // Ensure the event listener for the new game button is attached
     // (This is assuming the button is always present in the modal and doesn't get dynamically added/removed)
-    const newGameBtn = this.shadowRoot.querySelector("newGameBtn");
+    const newGameBtn = document.getElementById("newGameBtn");
     newGameBtn.onclick = () => this.resetGame();
   }
-
-  // showModal() {
-  //   const usedTime = Date.now() - this.startTime;
-  //   const seconds = Math.floor(usedTime / 1000);
-  //   this.updateBestTime(seconds);
-
-  //   if (this.modal) {
-  //     this.modal.show(seconds); // Call the show method of MemoryModal
-  //   } else {
-  //     console.warn("Modal instance not found");
-  //   }
-
-  //   const modal = this.shadowRoot.querySelector("memory-modal");
-  //   modal.show(seconds);
-  //   clearInterval(this.timer);
-  //   this.timer = null;
-
-  //   modal.onNewGame(() => this.resetGame());
-  // }
-
-  // hideModal() {
-  //   if (this.modal) {
-  //     this.modal.hide();
-  //   } else {
-  //     console.warn("Modal element not found");
-  //   }
-  // }
 
   updateBestTime(currentTime) {
     if (this.bestTime === null || currentTime < this.bestTime) {
@@ -273,31 +212,33 @@ class MemoryGame extends HTMLElement {
     }, 1500);
   }
 
-  // startTimer() {
-  //   if (this.timer === null) {
-  //     this.startTime = Date.now();
-  //     this.timer = setInterval(() => {
-  //       const usedTime = Date.now() - this.startTime;
-  //       const seconds = Math.floor(usedTime / 1000);
-  //       document.getElementById("timer").innerText = `Time: ${seconds} seconds`;
-  //     }, 1000);
-  //   }
-  // }
-
   startTimer() {
     if (this.timer === null) {
       this.startTime = Date.now();
       this.timer = setInterval(() => {
-        this.seconds = Math.floor((Date.now() - this.startTime) / 1000);
-        const timerElement =
-          this.shadowRoot.getElementById("timer") ||
-          document.getElementById("timer");
-        if (timerElement) {
-          timerElement.innerText = `Time: ${this.seconds} seconds`;
-        }
+        const usedTime = Date.now() - this.startTime;
+        const seconds = Math.floor(usedTime / 1000);
+        this.shadowRoot.getElementById(
+          "timer"
+        ).innerText = `Time: ${seconds} seconds`;
       }, 1000);
     }
   }
+
+  //   startTimer() {
+  //     if (this.timer === null) {
+  //       this.startTime = Date.now();
+  //       this.timer = setInterval(() => {
+  //         this.seconds = Math.floor((Date.now() - this.startTime) / 1000);
+  //         const timerElement =
+  //           this.shadowRoot.getElementById("timer") ||
+  //           document.getElementById("timer");
+  //         if (timerElement) {
+  //           timerElement.innerText = `Time: ${this.seconds} seconds`;
+  //         }
+  //       }, 1000);
+  //     }
+  //   }
 
   resetBoard() {
     [this.hasFlippedCard, this.lockBoard] = [false, false];
@@ -306,11 +247,9 @@ class MemoryGame extends HTMLElement {
 
   updateCards() {
     // Reset the game state if a game is in progress
-    //  if (this.timer) {
     if (this.timer) {
       clearInterval(this.timer);
       this.timer = null;
-      this.seconds = 0;
       this.pairedCards = 0;
       this.hasFlippedCard = false;
       this.lockBoard = false;
@@ -323,13 +262,9 @@ class MemoryGame extends HTMLElement {
     this.generateCards(filteredCardsData);
 
     // Update the timer display to 0
-    const timerElement = this.shadowRoot
-      ? this.shadowRoot.querySelector("timer")
-      : document.querySelector("timer");
+    const timerElement = document.getElementById("timer");
     if (timerElement) {
-      timerElement.innerText = `Time: ${this.seconds} seconds`;
-    } else {
-      console.error("Timer element not found");
+      timerElement.textContent = "Time: 0 seconds";
     }
 
     this.pairedCards = 0; // Reset the paired cards count
@@ -341,6 +276,13 @@ class MemoryGame extends HTMLElement {
     this.hideModal();
     this.pairedCards = 0;
     this.updateCards(); // Regenerate cards based on current selection
+    this.startTimer(); // Restart the timer
+    //document.getElementById("timer").innerText = "Time: 0 seconds";
+  }
+
+  hideModal() {
+    const modal = this.shadowRoot.querySelector("memory-modal");
+    //modal.style.display = "none";
   }
 
   render() {

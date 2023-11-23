@@ -97,7 +97,7 @@ class MemoryGame extends HTMLElement {
     // Now you can safely add event listeners or interact with the modal
     //this.modal.onNewGame(() => this.resetGame());
 
-    this.updateCards();
+    // this.updateCards();
     this.displayBestTime();
     // this.checkForMatch();
   }
@@ -199,26 +199,42 @@ class MemoryGame extends HTMLElement {
   }
 
   showModal() {
-    clearInterval(this.timer); // Stop the timer
-
-    const usedTime = Date.now() - this.startTime;
-    const seconds = Math.floor(usedTime / 1000);
-    this.updateBestTime(seconds);
-
-    const timeSpentElement = this.shadowRoot.querySelector("timeSpent");
-    timeSpentElement.textContent = `${seconds}`;
-
     const modal = this.shadowRoot.querySelector("memory-modal");
-    modal.style.display = "block";
+    const usedTime = this.seconds;
+    this.updateBestTime(usedTime);
 
-    // Reset the timer variable
+    if (modal) {
+      modal.show(usedTime); // Call the show method of MemoryModal
+      modal.onNewGame(() => this.resetGame());
+    } else {
+      console.warn("Modal element not available when showModal called");
+    }
+
+    clearInterval(this.timer);
     this.timer = null;
-
-    // Ensure the event listener for the new game button is attached
-    // (This is assuming the button is always present in the modal and doesn't get dynamically added/removed)
-    const newGameBtn = this.shadowRoot.querySelector("newGameBtn");
-    newGameBtn.onclick = () => this.resetGame();
   }
+
+  // showModal() {
+  //   clearInterval(this.timer); // Stop the timer
+
+  //   const usedTime = Date.now() - this.startTime;
+  //   const seconds = Math.floor(usedTime / 1000);
+  //   this.updateBestTime(seconds);
+
+  //   const timeSpentElement = this.shadowRoot.querySelector("timeSpent");
+  //   timeSpentElement.textContent = `${seconds}`;
+
+  //   const modal = this.shadowRoot.querySelector("memory-modal");
+  //   modal.style.display = "block";
+
+  //   // Reset the timer variable
+  //   this.timer = null;
+
+  //   // Ensure the event listener for the new game button is attached
+  //   // (This is assuming the button is always present in the modal and doesn't get dynamically added/removed)
+  //   const newGameBtn = this.shadowRoot.querySelector("newGameBtn");
+  //   newGameBtn.onclick = () => this.resetGame();
+  // }
 
   // showModal() {
   //   const usedTime = Date.now() - this.startTime;

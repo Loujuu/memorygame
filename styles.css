@@ -1,18 +1,14 @@
 * {
   padding: 0;
-  margin: 0;
   box-sizing: border-box;
   /*border-box will keeps h and w while adding border and padding, default is content-box adding to total w and h*/
 }
-/* 
-p {
-  font-size: 16px;
-} */
 
 body {
   height: 100vh;
-  /*vh=viewpoint height - 100 percent of available height of webpage*/
+  margin: 0;
   display: flex;
+  justify-content: center;
   background: #060ab2;
 }
 
@@ -31,18 +27,49 @@ body {
   align-items: center;
 }
 
-#timer {
+.title {
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
   color: white;
-  text-align: end;
-  font-size: 14px;
-  flex: auto;
+  padding-right: 4px;
 }
 
-#bestTime {
-  font-family: Arial, Helvetica, sans-serif;
+.memory-game {
+  width: 640px;
+  height: 640px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  perspective: 1000px;
+}
+
+select {
+  width: 56px;
+  background-color: #060ab2;
   color: white;
-  text-align: end;
-  font-size: 14px;
-  flex: auto;
+  padding: 8px;
+  border-radius: 12px;
+  border: 0;
+  outline: none;
+}
+
+option {
+  border: 0;
+  outline: none;
+}
+
+.btn-primary {
+  width: 100px;
+  height: 32px;
+  background-color: #060ab2;
+  color: white;
+  padding: 8px;
+  border-radius: 12px;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #090ded;
 }

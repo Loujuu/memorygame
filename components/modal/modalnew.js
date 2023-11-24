@@ -1,4 +1,7 @@
 class MemoryModal extends HTMLElement {
+  static get observedAttributes() {
+    return ["open"];
+  }
   constructor() {
     super(); // Always call super() first in the constructor.
     this.attachShadow({ mode: "open" }); // Attach a shadow root to the element.
@@ -11,6 +14,20 @@ class MemoryModal extends HTMLElement {
     // this.show(); // Show the modal with a default time spent of 0 seconds
 
     // this.hide();
+
+    this.modalDiv = this.shadowRoot.querySelector(".modal");
+
+    // Attach an event listener to the new game button
+    const newGameBtn = this.shadowRoot.querySelector("#newGameBtn");
+    newGameBtn.addEventListener("click", () => {
+      this.dispatchEvent(
+        new CustomEvent("start-new-game", {
+          bubbles: true,
+          composed: true,
+          detail: { modalElement: this }, // Pass the card element as detail
+        })
+      );
+    });
   }
 
   // show(timeSpent) {
@@ -24,11 +41,13 @@ class MemoryModal extends HTMLElement {
   //   this.shadowRoot.querySelector(".modal").style.display = "none";
   // }
 
-  onNewGame() {
-    // Attach an event listener to the new game button
-    const newGameBtn = this.shadowRoot.querySelector("#newGameBtn");
-    newGameBtn.onclick = resetGame();
-    console.log("buttonclick");
+  attributeChangedCallback(name, oldValue, newValue) {
+    // Update the component when attributes change
+    if (this.modalDiv && newValue === "true") {
+      this.modalDiv.classList.add("showmodal");
+    } else if (this.modalDiv && newValue === "false") {
+      this.modalDiv.classList.remove("showmodal");
+    }
   }
 
   render() {
@@ -42,12 +61,15 @@ class MemoryModal extends HTMLElement {
           background-color: white;
           border-radius: 20px;
           box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-          display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
           backgrounf-color: white;
+          display: none;
         }  
+        .modal.showmodal{
+          display: block;
+        }
         .modal-content {
           padding-top: 10px;
           width: 100%;
@@ -102,7 +124,10 @@ class MemoryModal extends HTMLElement {
           flex: auto;
         }
         </style>
-    <div class="modal">
+
+        <div class="modal ${
+          this.getAttribute("open") == "false" ? "" : "showmodal"
+        }">
     <div class="modal-content">
       <h5 class="modal-title">You are a winner!!!</h5>
       <div class="txt-container">

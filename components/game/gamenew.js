@@ -37,6 +37,7 @@ class MemoryGame extends HTMLElement {
     this.firstCard = null;
     this.secondCard = null;
     this.pairedCards = 0;
+    this.modalOpen = false;
   }
 
   connectedCallback() {
@@ -52,13 +53,18 @@ class MemoryGame extends HTMLElement {
       const flippedCard = event.detail.cardElement;
       this.flipCard(flippedCard);
     });
+
+    // Listen for the custom event from memory-modal elements
+    this.gameContainer.addEventListener("modal-open", (event) => {
+      // The event detail contains the card element that was flipped
+      const flippedCard = event.detail.modalElement;
+    });
     // Ensure elements are rendered before initializing
     // setTimeout(() => {
     //   this.init(); // Initialize component after ensuring elements are available
     // }, 0);
 
     this.updateCards();
-    this.hideModal();
   }
 
   init() {
@@ -151,7 +157,7 @@ class MemoryGame extends HTMLElement {
 
   disableCards() {
     //CHECK I changed pairedCards to 2 instead og one. Not sure if this is correct
-    this.pairedCards += 2; // Increment the count of matched pairs
+    this.pairedCards += 1; // Increment the count of matched pairs
 
     console.log(
       "Paired Cards:",
@@ -163,7 +169,9 @@ class MemoryGame extends HTMLElement {
     if (this.pairedCards === this.totalPairs) {
       console.log("we got pairs");
       setTimeout(() => {
-        this.showModal();
+        const modal = document.querySelector("memory-modal");
+        modal.setAttribute("open", true);
+        //this.modalOpen = true;
       }, 1000);
     }
     this.resetBoard();
@@ -181,23 +189,6 @@ class MemoryGame extends HTMLElement {
   //   }
   //   this.resetBoard();
   // }
-
-  hideModal() {
-    if (this.modal) {
-      this.modal.style.display = "none";
-    } else {
-      console.error("Modal element not found");
-    }
-  }
-
-  showModal() {
-    if (this.modal) {
-      this.modal.style.display = "block";
-      // additional logic to set the content of the modal
-    } else {
-      console.error("Modal element not found");
-    }
-  }
 
   // showModal() {
   //   // clearInterval(this.timer); // Stop the timer
@@ -241,7 +232,6 @@ class MemoryGame extends HTMLElement {
   resetBoard() {
     [this.hasFlippedCard, this.lockBoard] = [false, false];
     [this.firstCard, this.secondCard] = [null, null];
-    this.pairedCards = 0;
   }
 
   updateCards() {
@@ -267,7 +257,7 @@ class MemoryGame extends HTMLElement {
             </div>
         </div>
       <section class="memory-game" id="gameContainer"></section>  
-      <memory-modal></memory-modal>
+      <memory-modal open=${this.modalOpen}></memory-modal>
      
  
 `;
